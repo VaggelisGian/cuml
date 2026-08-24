@@ -62,6 +62,7 @@ void build_linkage(const raft::handle_t& handle,
                    Common::robust_single_linkage_output<value_idx, value_t>& out)
 {
   auto stream    = handle.get_stream();
+  RAFT_EXPECTS(m > 0, "Number of samples m must be greater than 0");
   size_t n_edges = m - 1;
   cuvs::cluster::agglomerative::helpers::linkage_graph_params::mutual_reachability_params
     linkage_params;
@@ -74,7 +75,7 @@ void build_linkage(const raft::handle_t& handle,
       params.min_samples,
       m,
       m - 1);
-    linkage_params.min_samples = m;
+    linkage_params.min_samples = m - 1;
   } else {
     linkage_params.min_samples = params.min_samples + 1;
   }
